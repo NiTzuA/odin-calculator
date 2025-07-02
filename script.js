@@ -17,7 +17,12 @@ function multiply(numOne, numTwo) {
 }
 
 function divide(numOne, numTwo) {
-    return numTwo == 0 ? "Cannot divide by zero!" : numOne / numTwo;
+    if (numTwo == 0) {
+        alert("Ouch! :(");
+        return "";
+    } else {
+        return numOne / numTwo;
+    }
 }
 
 function operate(numOne, numTwo, operator) {
@@ -52,7 +57,7 @@ calculatorButtons.addEventListener('click', (e) => {
         }
         else if (value == '=') {
             if (numTwo === "") {
-                alert("Input the second number!");
+                alert("Input a number!");
             } else {
                 result = operate(numOne, numTwo, operator);
                 numOne = String(result);
