@@ -55,7 +55,7 @@ calculatorButtons.addEventListener('click', (e) => {
                 alert("Input the second number!");
             } else {
                 result = operate(numOne, numTwo, operator);
-                numOne = "";
+                numOne = String(result);
                 numTwo = "";
                 operator = "";
                 isNumTwo = false;
