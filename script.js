@@ -34,6 +34,7 @@ function operate(numOne, numTwo, operator) {
 }
 
 const calculatorButtons = document.querySelector('#calculator');
+const display = document.querySelector('#display');
 
 calculatorButtons.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
@@ -43,8 +44,10 @@ calculatorButtons.addEventListener('click', (e) => {
         if (value == 'C') {
             if (!isNumTwo) {
                 numOne = numOne.slice(0, -1);
+                display.textContent = numOne;
             } else {
                 numTwo = numTwo.slice(0, -1);
+                display.textContent = numTwo;
             }
         }
         else if (value == '=') {
@@ -56,7 +59,7 @@ calculatorButtons.addEventListener('click', (e) => {
                 numTwo = "";
                 operator = "";
                 isNumTwo = false;
-                alert(result);
+                display.textContent = result;
             }
         }
         else if (operators.includes(value)) {
@@ -65,13 +68,16 @@ calculatorButtons.addEventListener('click', (e) => {
             } else {
                 isNumTwo = true;
                 operator = value;
+                display.textContent = operator;
             }
         }
         else if (!isNumTwo) {
             numOne += value;
+            display.textContent = numOne;
         } 
         else if (isNumTwo) {
             numTwo += value;    
+            display.textContent = numTwo;
         }
     }
 });
