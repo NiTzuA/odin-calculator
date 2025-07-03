@@ -2,6 +2,7 @@ let numOne = "";
 let operator = "";
 let numTwo = "";
 let isNumTwo = false;
+let inChain = false;
 let isDecimal = false;
 const operators = ['+', '-', '*', '/'];
 
@@ -40,6 +41,7 @@ function operate(numOne, numTwo, operator) {
 }
 
 function processInput(value) {
+
         if (value == 'C') {
             if (!isNumTwo) {
                 numOne = numOne.slice(0, -1);
@@ -52,9 +54,11 @@ function processInput(value) {
         else if (value == 'AC') {
             display.textContent = ""
             numOne = "";
-            numTwo = "";
             operator = "";
+            numTwo = "";
             isNumTwo = false;
+            inChain = false;
+            isDecimal = false;
         } 
         else if (value == '=') {
             if (numTwo === "") {
@@ -71,24 +75,36 @@ function processInput(value) {
         else if (operators.includes(value)) {
             if (numOne === "") {
                 alert("Input a number first!");
-            }
-            else if (isNumTwo) {
-                alert("Only two digit operations are supported.");
             } 
-            else {
+            else if (isNumTwo && !inChain) {
+                result = operate(numOne, numTwo, operator);
+                numOne = String(result);
+                numTwo = "";
+                operator = value;
+                display.textContent = result;
+                inChain = true;
+            }
+            else if (inChain) {
                 isNumTwo = true;
                 operator = value;
-                display.textContent = operator;
+            }
+            else
+            {
+                isNumTwo = true;
+                operator = value;
+                display.textContent = "";
             }
         }
         else if (!isNumTwo) {
             if (!numOne.includes(".") || value != '.') {
+                inChain = false;
                 numOne += value;
                 display.textContent = numOne;
             }     
         } 
         else if (isNumTwo) {
             if (!numTwo.includes(".") || value != '.') {
+                inChain = false
                 numTwo += value;    
                 display.textContent = numTwo;
             }
@@ -113,6 +129,7 @@ document.addEventListener('keydown', (e) => {
         processInput(key);
     }
     else if (key == '=' || key == 'Enter') {
+        e.preventDefault();
         processInput('=');
     }
     else if (key == 'Backspace') {
