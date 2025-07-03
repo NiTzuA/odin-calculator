@@ -71,7 +71,11 @@ function processInput(value) {
         else if (operators.includes(value)) {
             if (numOne === "") {
                 alert("Input a number first!");
-            } else {
+            }
+            else if (isNumTwo) {
+                alert("Only two digit operations are supported.");
+            } 
+            else {
                 isNumTwo = true;
                 operator = value;
                 display.textContent = operator;
