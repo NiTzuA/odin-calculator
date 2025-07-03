@@ -2,6 +2,7 @@ let numOne = "";
 let operator = "";
 let numTwo = "";
 let isNumTwo = false;
+let isDecimal = false;
 const operators = ['+', '-', '*', '/'];
 
 function add(numOne, numTwo) {
@@ -38,14 +39,7 @@ function operate(numOne, numTwo, operator) {
     }
 }
 
-const calculatorButtons = document.querySelector('#calculator');
-const display = document.querySelector('#display');
-
-calculatorButtons.addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') {
-
-        const value = e.target.textContent;
-
+function processInput(value) {
         if (value == 'C') {
             if (!isNumTwo) {
                 numOne = numOne.slice(0, -1);
@@ -55,6 +49,13 @@ calculatorButtons.addEventListener('click', (e) => {
                 display.textContent = numTwo;
             }
         }
+        else if (value == 'AC') {
+            display.textContent = ""
+            numOne = "";
+            numTwo = "";
+            operator = "";
+            isNumTwo = false;
+        } 
         else if (value == '=') {
             if (numTwo === "") {
                 alert("Input a number!");
@@ -77,12 +78,44 @@ calculatorButtons.addEventListener('click', (e) => {
             }
         }
         else if (!isNumTwo) {
-            numOne += value;
-            display.textContent = numOne;
+            if (!numOne.includes(".") || value != '.') {
+                numOne += value;
+                display.textContent = numOne;
+            }     
         } 
         else if (isNumTwo) {
-            numTwo += value;    
-            display.textContent = numTwo;
+            if (!numTwo.includes(".") || value != '.') {
+                numTwo += value;    
+                display.textContent = numTwo;
+            }
         }
+}
+
+const calculatorButtons = document.querySelector('#calculator');
+const display = document.querySelector('#display');
+
+calculatorButtons.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') {
+
+        const value = e.target.textContent;
+        processInput(value);
     }
 });
+
+document.addEventListener('keydown', (e) => {
+    const key = e.key;
+
+    if ((key >= '0' && key <= '9') || key == '.' || operators.includes(key)) {
+        processInput(key);
+    }
+    else if (key == '=' || key == 'Enter') {
+        processInput('=');
+    }
+    else if (key == 'Backspace') {
+        processInput('C');
+    }
+    else if (key == 'Delete') {
+        processInput('AC');
+    }
+
+})
